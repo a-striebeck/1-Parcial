@@ -1,15 +1,15 @@
 /*
-Una Empresa que realiza Servicios de Limpieza de Tapizados “Biuty-Sand” nos convoca para la
-realización de una App que permita registrar los Pedidos de Embellecimiento de los Autos.
-En esta etapa del desarrollo, solo deberemos realizar el módulo “Solicitudes”
+Una Empresa que vende “productos de seguridad industrial NicTech” nos convoca para la
+realización de una App que permita registrar los Pedidos de Artículos de los clientes.
+En esta etapa del desarrollo, solo deberemos realizar el módulo “Clientes”
 La misma debe permitir:
-1. Gestionar las Solicitudes
-a. Dar de alta la Solicitud (el código de la Solicitud es la ubicación en el array x 100).
-b. Dar de Baja las Solicitudes x código de Solicitud.
-c. Modificar las Solicitudes, ingresar el código, mostrarlo y editarlo.
-2. Listar las solicitudes.
-a. Listar todas las Solicitudes.
-b. Buscar unas Solicitud x código y mostrarla (imprimir cartel de no encontrado).
+1. Gestionar los Clientes
+a. Dar de alta el cliente (el código del cliente es la ubicación en el array x 100).
+b. Dar de Baja los clientes x código de cliente.
+c. Modificar los clientes, ingresar el código, mostrarlo y editarlo.
+2. Listar los Clientes.
+a. Listar todos los Clientes.
+b. Buscar un Clientes x código y mostrarlo (imprimir cartel de no encontrado).
 3. Todo esto mediante un Menú, Modularizando en Funciones, utilizando Archivos, arreglos y
 estructuras.
 */
@@ -17,60 +17,57 @@ estructuras.
 #include <iostream>
 #include <fstream>
  
-const int MAXCARS = 100;
+const int MAXCLIENTS = 100;
 using namespace std;
 
-typedef struct car
+typedef struct client
 {
     string name;
-    string lastname;
+    string lastName;
     int dni;
-    int ticketID;
-    bool isCharged = false;
+    int clientID;
 
 
-} car;
+} client;
 
-typedef car cars[MAXCARS];
+typedef client clients[MAXCLIENTS];
 
-int menu(cars& tCars, int totalRequests);
-car createNewCar(int tTicketID);
-void addNewCar(cars& tCars, int& totalRequests);
-car addCarFromFile(string tName, string tLastname, int tDNI, int tTicketID, bool tIsCharged);
-void deleteCar(cars& tCars, int tDNI, int totalRequests);
-void editCar(cars& tCars, int tDNI, int totalRequests);
-void listCars(cars& tCars, int totalRequests);
-void searchCar(cars& tCars, int tDNI, int totalRequests);
-int readfile(cars& tCars);
-void save(cars& tCars, int totalRequests);
+int menu(clients& tClients, int totalClients);
+client createNewclient(int tClientID);
+void addNewclient(clients& tClients, int& totalClients);
+void deleteclient(clients& tClients, int tDNI, int totalClients);
+void editClient(clients& tClients, int tDNI, int totalClients);
+void listClients(clients& tClients, int totalClients);
+void searchclient(clients& tClients, int tDNI, int totalClients);
+int readFromFile(clients& tClients);
+void save(clients& tClients, int totalClients);
 
 
 int main()
 {   
-    cars Cars;
-    int totalRequests = 0;
+    clients Clients;
+    int totalClients = 0;
 
-    totalRequests = readfile(Cars);
-    totalRequests = menu(Cars, totalRequests);
-    save(Cars, totalRequests);
+    totalClients = readFromFile(Clients);
+    totalClients = menu(Clients, totalClients);
+    save(Clients, totalClients);
     return 0;
 }
 
-int menu(cars& tCars, int totalRequests){
+int menu(clients& tClients, int totalClients){
 
     int requesterDNI = 0;
     int choice;
-    int i = 0;
 
     while (choice != 6)
     {
-        cout << "Sistema de gestion de solicitudes" << endl;
+        cout << "Sistema de gestion de clientes" << endl;
         cout << "--------------------------------" << endl;
-        cout << "1. Ingresar nueva solicitud." << endl;
-        cout << "2. Editar solicitud." << endl;
-        cout << "3. Eliminar solicitud." << endl;
-        cout << "4. Listar solicitudes." << endl;
-        cout << "5. Buscar solicitud" << endl;
+        cout << "1. Ingresar cliente." << endl;
+        cout << "2. Editar cliente." << endl;
+        cout << "3. Eliminar cliente." << endl;
+        cout << "4. Listar clientes." << endl;
+        cout << "5. Buscar cliente" << endl;
         cout << "6. Cerrar el programa." << endl;
         cout << "--------------------------------" << endl;
         cin >> choice;
@@ -79,37 +76,34 @@ int menu(cars& tCars, int totalRequests){
         {
         case 1:
            
-            while (tCars[i].isCharged == true)
-            {
-                i++;
-            }
-            addNewCar(tCars, totalRequests);
+
+            addNewclient(tClients, totalClients);
             break;
 
         case 2:
 
-            cout << "Ingrese DNI del titular de la solicitud: ";
+            cout << "Ingrese DNI del titular de cliente: ";
             cin >> requesterDNI;
-            editCar(tCars, requesterDNI, totalRequests);
+            editClient(tClients, requesterDNI, totalClients);
 
             break;
         case 3: 
 
-            cout << "Ingrese DNI del titular de la solicitud a borrar: ";
+            cout << "Ingrese DNI del cliente que desea borrar: ";
             cin >> requesterDNI;
-            deleteCar(tCars, requesterDNI, totalRequests);
+            deleteclient(tClients, requesterDNI, totalClients);
 
             break;
         case 4:
 
-            listCars(tCars, totalRequests);
+            listClients(tClients, totalClients);
 
             break;
         case 5:
 
-            cout << "Ingrese DNI del titular de la solicitud: ";
+            cout << "Ingrese DNI del cliente: ";
             cin >> requesterDNI;
-            searchCar(tCars, requesterDNI,totalRequests);
+            searchclient(tClients, requesterDNI, totalClients);
 
             break;
         case 6:
@@ -124,142 +118,133 @@ int menu(cars& tCars, int totalRequests){
             break;
         }
     }
-return totalRequests; 
+
+return totalClients; 
 }
 
-car createNewCar(int tTicketID)
+client createNewclient(int tClientID)
 {
-    car newCar;
-    newCar.ticketID = tTicketID;
-    newCar.isCharged = true;
-    cout << "Ingrese Nombre del titular: ";
-    cin >> newCar.name;
-    cout << "Ingrese Apellido del titular: ";
-    cin >> newCar.lastname;
-    cout << "Ingrese DNI del titular: ";
-    cin >> newCar.dni;
+    client newclient;
+    newclient.clientID = tClientID * 100;
+    cout << "Ingrese Nombre: ";
+    cin >> newclient.name;
+    cout << "Ingrese Apellido: ";
+    cin >> newclient.lastName;
+    cout << "Ingrese DNI: ";
+    cin >> newclient.dni;
 
-    return newCar;
+    return newclient;
 }
-void addNewCar(cars& tCars, int& totalRequests)
+void addNewclient(clients& tClients, int& totalClients)
 {
-    if (totalRequests < MAXCARS)
+    if (totalClients < MAXCLIENTS)
     {
-        tCars[totalRequests] = createNewCar(totalRequests);
-        totalRequests++;
+        tClients[totalClients] = createNewclient(totalClients);
+        cout << "Cliente creado con el nro: " << tClients[totalClients].clientID << endl;
+        totalClients++;
     }
     else
     {
-        cout << "No se pueden agregar más autos. Límite alcanzado." << endl;
+        cout << "No se pueden agregar más clientes. Límite alcanzado." << endl;
     }
 }
 
-
-car addCarFromFile(string tName, string tLastname, int tDNI, int tTicketID, bool tIsCharged){
-
-    car newCar;
-    newCar.name = tName;
-    newCar.lastname = tLastname;
-    newCar.dni = tDNI;
-    newCar.ticketID = tTicketID;
-    newCar.isCharged = tIsCharged;
-
-return newCar;
-}
-
-void deleteCar(cars& tCars, int tDNI, int totalRequests){
-    
-    for (int i = 1; i < totalRequests; i++)
+void deleteclient(clients& tClients, int tDNI, int totalClients){
+    bool choice = false;
+    for (int i = 0; i < totalClients; i++)
     {
-        if (tDNI == tCars[i].dni)
-        {
-            for (int j = i; j < totalRequests; j++)
-            {
-                tCars[j].dni = tCars[j + 1].dni;
-                tCars[j].name = tCars[j + 1].name;
-                tCars[j].lastname = tCars[j + 1].lastname;
-            
-            }
-            totalRequests--;
-            break;
-        }
-    }
-
-}
-
-void editCar(cars& tCars, int tDNI, int totalRequests){
-
-    for (int i = 1; i < totalRequests; i++)
-    {
-        if (tDNI == tCars[i].dni)
+        if (tDNI == tClients[i].dni)
         {   
-            cout << "\n Ingrese nuevo DNI: ";
-            cin >> tCars[i].dni;
-            cout << "\n Ingrese nuevo nombre: ";
-            cin >> tCars[i].name;
-            cout << "\n Ingrese nuevo apellido";
-            cin >> tCars[i].lastname;
+            cout << "Desea borrar el cliente " << tClients[i].name << " " <<  tClients[i].lastName << endl << "Ingrese 1 para confirmar o 0 para cancelar";
+            cin >> choice;
+            if (choice == true)
+            {
+                for (int j = i; j < totalClients; j++)
+                {
+                    tClients[j].dni = 0;
+                    tClients[j].name = nullptr;
+                    tClients[j].lastName = nullptr;
+                
+                }
+                totalClients--;
+            }
+
         }
     }
+
 }
 
-void listCars(cars& tCars, int totalRequests)
+void editClient(clients& tClients, int tDNI, int totalClients){
+    cout << "Cliente a editar: ";
+    for (int i = 0; i < totalClients; i++)
+    {
+        if (tDNI == tClients[i].dni)
+        {   cout << tClients[i].clientID << "\t" << tClients[i].name << "\t" << tClients[i].lastName;
+            cout << "\nIngrese nuevo DNI: ";
+            cin >> tClients[i].dni;
+            cout << "\nIngrese nuevo nombre: ";
+            cin >> tClients[i].name;
+            cout << "\nIngrese nuevo apellido: ";
+            cin >> tClients[i].lastName;
+            break;
+    }
+}
+}
+
+void listClients(clients& tClients, int totalClients)
 {
     
-    cout << "Solicitudes ingresadas: " << endl;
-    for (int i = 0; i < totalRequests; i++)
+    cout << "Listado de clientes: " << endl;
+    cout << "Nro de cliente\tNombre\t\tApellido\t\tDNI\n";
+    for (int i = 0; i < totalClients; i++)
     {
-        cout << "Nombre: " << tCars[i].name << endl;
-        cout << "Apellido: " << tCars[i].lastname << endl;
-        cout << "DNI: " << tCars[i].dni << endl;
-        cout << "Nro de solicitud: " << tCars[i].ticketID << endl;
+        cout << tClients[i].clientID<< "\t\t" << tClients[i].name << "\t\t" << tClients[i].lastName<< "\t\t" << tClients[i].dni << endl;
     }
 }
 
-void searchCar(cars& tCars, int tDNI, int totalRequests){
-    for (int i = 0; i < totalRequests; i++)
+void searchclient(clients& tClients, int tDNI, int totalClients){
+    for (int i = 0; i < totalClients; i++)
     {
-        if (tDNI == tCars[i].dni)
+        if (tDNI == tClients[i].dni)
         {   
-        cout << "Nombre: " << tCars[i].name << endl;
-        cout << "Apellido: " << tCars[i].lastname << endl;
-        cout << "Nro de solicitud: " << tCars[i].ticketID << endl; 
+        cout << "Nombre: " << tClients[i].name << endl;
+        cout << "Apellido: " << tClients[i].lastName << endl;
+        cout << "Nro de cliente: " << tClients[i].clientID << endl; 
         }
     }
 }
 
-int readfile(cars& tCars){
-    
-    ifstream file("cars.csv");
-    if (file.is_open()) {
-        string name;
-        string lastname;
-        int dni;
-        int ticketID;
-        bool isCharged;
-        int countRequests = 0;
+int readFromFile(clients& tClients)
+{
+    ifstream file("clients.txt");
+    int countClients = 0;
 
-        while (countRequests < MAXCARS && file >> ticketID >> name >> lastname >> dni >> isCharged) {
-            tCars[countRequests] = addCarFromFile(name, lastname, dni, ticketID, isCharged);
-            countRequests++;
+    if (file.is_open())
+    {
+        while (countClients < MAXCLIENTS && file >> tClients[countClients].clientID >> tClients[countClients].name >> tClients[countClients].lastName >> tClients[countClients].dni)
+        {
+            countClients++;
         }
 
         file.close();
-        return countRequests;
-    } else {
-        cout << "No se pudo abrir el archivo cars.csv" << endl;
-        return 0;
+        cout << "Archivo cargado exitosamente." << endl;
     }
+    else
+    {
+        cout << "No se pudo abrir el archivo clients.txt" << endl;
+    }
+
+    return countClients;
 }
-void save(cars& tCars, int totalRequests){
+void save(clients& tClients, int totalClients){
     
-    ofstream file("cars.csv");
+    ofstream file("clients.txt");
     if (file.is_open()) {
-        for (int i = 0; i < totalRequests; i++) {
-            file << tCars[i].ticketID << "," << tCars[i].name << "," << tCars[i].lastname << "," << tCars[i].dni << "," << tCars[i].isCharged << endl;
+        for (int i = 0; i < totalClients; i++) {
+            file << tClients[i].clientID << " " << tClients[i].name << " " << tClients[i].lastName << " " << tClients[i].dni << endl;
         }
         file.close();
     } else {
-        cout << "No se pudo abrir el archivo cars.csv" << endl;
+        cout << "No se pudo abrir el archivo clients.txt" << endl;
     }
 }

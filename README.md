@@ -1,4 +1,4 @@
-### README - Examen de Gestión de Clientes
+# Primer parcial cuatrimestral de la materia Algoritmos y estructura de datos I de la carrera Analista en Sistemas del Instituto Superior de Formacion Tecnica N°151.
 
 Este código es un programa de gestión de clientes desarrollado en C++, diseñado para realizar operaciones básicas como agregar, editar, eliminar, listar y buscar clientes en un archivo de texto llamado `clients.txt`. El programa proporciona un menú interactivo que permite al usuario realizar estas operaciones de manera intuitiva.
 
@@ -45,7 +45,7 @@ Este README proporciona una descripción general del programa y su funcionalidad
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### README - Customer Management Exam
+# First quarterly partial of the subject Algorithms and data structure I of the Systems Analyst career at Instituto Superior de Formacion Tecnica N°151.
 
 This code is a customer management program developed in C++, designed to perform basic operations such as adding, editing, deleting, listing, and searching customers in a text file named `clients.txt`. The program provides an interactive menu that allows the user to perform these operations intuitively.
 
